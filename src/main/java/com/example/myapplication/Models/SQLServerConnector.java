@@ -8,7 +8,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLServerConnector {
+
+public class    SQLServerConnector {
 
     private static final String DRIVER = "net.sourceforge.jtds.jdbc.Driver";
     private static final String IP = "sql9001.site4now.net";
@@ -17,8 +18,6 @@ public class SQLServerConnector {
     private static final String USERNAME = "db_aaec8e_paperosbd001_admin";
     private static final String PASSWORD = "@fabian456";
 
-    private Connection connection = null;
-
     public SQLServerConnector() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                 .permitAll().build();
@@ -26,32 +25,24 @@ public class SQLServerConnector {
     }
 
     public Connection connect() {
-        if (connection == null) {
-            try {
-                Class.forName(DRIVER);
-                String connectionUrl = "jdbc:jtds:sqlserver://" + IP + ":" + PORT + ";databaseName=" + DB + ";encrypt=true;trustServerCertificate=true;";
-                connection = DriverManager.getConnection(connectionUrl, USERNAME, PASSWORD);
-            } catch (ClassNotFoundException | SQLException e) {
-                throw new RuntimeException("Error al conectar con la base de datos", e);
-            }
+        try {
+            Class.forName(DRIVER);
+            String connectionUrl = "jdbc:jtds:sqlserver://" + IP + ":" + PORT + ";databaseName=" + DB + ";encrypt=true;trustServerCertificate=true;";
+            return DriverManager.getConnection(connectionUrl, USERNAME, PASSWORD);
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException("Error al conectar con la base de datos", e);
         }
-        return connection;
     }
 
-    public void disconnect() {
+    public void disconnect(Connection connection) {
         if (connection != null) {
             try {
                 connection.close();
-                connection = null;
             } catch (SQLException e) {
                 throw new RuntimeException("Error al cerrar la conexión con la base de datos", e);
             }
         }
     }
-
-
 }
-
-
 
 
