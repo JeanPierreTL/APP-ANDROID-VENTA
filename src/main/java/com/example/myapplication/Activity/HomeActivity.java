@@ -47,7 +47,6 @@ public class HomeActivity extends AppCompatActivity {
             // Configurar la acción al hacer clic en el botón
             productButton.setOnClickListener(v -> {
                 Producto seleccionado = (Producto) v.getTag(); // Obtener el producto asociado
-                Toast.makeText(this, seleccionado.getNombreProducto() + " seleccionado", Toast.LENGTH_SHORT).show();
 
                 // Aquí puedes implementar la lógica para agregar al carrito
             });
@@ -56,9 +55,6 @@ public class HomeActivity extends AppCompatActivity {
             productContainer.addView(productButton);
         }
     }
-
-
-
 
 
 

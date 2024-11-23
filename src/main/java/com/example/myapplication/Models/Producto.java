@@ -7,7 +7,7 @@ public class Producto {
     private double precio;
     private boolean disponibilidad;
     private int stock;
-
+   private String imagen;
     public Producto(int idProducto, String nombreProducto, String descripcion, double precio, boolean disponibilidad, int stock) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
@@ -15,6 +15,14 @@ public class Producto {
         this.precio = precio;
         this.disponibilidad = disponibilidad;
         this.stock = stock;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public int getIdProducto() {

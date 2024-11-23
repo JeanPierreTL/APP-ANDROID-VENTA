@@ -34,12 +34,12 @@ public class ProductoDAOImpl implements ProductoDAO {
                         rs.getBoolean("disponibilidad"),
                         rs.getInt("stock")
                 );
+
                 productos.add(producto); // Agregar producto a la lista
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return productos;
     }
 }
