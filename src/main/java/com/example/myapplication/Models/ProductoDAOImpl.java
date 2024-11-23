@@ -37,7 +37,7 @@ public class ProductoDAOImpl implements ProductoDAO {
                 productos.add(producto); // Agregar producto a la lista
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Manejar excepciones
+            e.printStackTrace();
         }
 
         return productos;

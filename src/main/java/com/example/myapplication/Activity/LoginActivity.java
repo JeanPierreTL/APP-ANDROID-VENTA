@@ -13,7 +13,7 @@ import com.example.myapplication.Models.ClienteDAO;
 import com.example.myapplication.Models.ClienteDAOImpl;
 import com.example.myapplication.Models.SQLServerConnector;
 import com.example.myapplication.R;
-
+import android.app.ProgressDialog;
 public class LoginActivity extends AppCompatActivity {
 
     EditText usuario, contrasena;
@@ -40,26 +40,37 @@ public class LoginActivity extends AppCompatActivity {
     private void iniciarSesion() {
         String usuarioInput = usuario.getText().toString().trim();
         String contrasenaInput = contrasena.getText().toString().trim();
-        SQLServerConnector sqlConecctor = new SQLServerConnector();
-        clienteDAO = new ClienteDAOImpl(sqlConecctor);
 
-        // Validar que los campos no estén vacíos
         if (usuarioInput.isEmpty() || contrasenaInput.isEmpty()) {
             Toast.makeText(this, "Por favor, ingresa ambos campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Verificar credenciales utilizando ClienteDAO
-        boolean esValido = clienteDAO.iniciarSesion(usuarioInput, contrasenaInput);
+        // Crear el ProgressDialog
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Iniciando sesión...");
+        progressDialog.setCancelable(false); // Evita que se cierre accidentalmente
+        progressDialog.show();
 
-        if (esValido) {
-            Toast.makeText(this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
-            // Redirigir a HomeActivity al inicio de sesión exitoso
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish(); // Finalizar LoginActivity
-        } else {
-            Toast.makeText(this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-        }
+        // Ejecutar la lógica en un hilo secundario
+        new Thread(() -> {
+            SQLServerConnector sqlConnector = new SQLServerConnector();
+            ClienteDAO clienteDAO = new ClienteDAOImpl(sqlConnector);
+
+            boolean esValido = clienteDAO.iniciarSesion(usuarioInput, contrasenaInput);
+
+            // Volver al hilo principal para actualizar la UI
+            runOnUiThread(() -> {
+                progressDialog.dismiss(); // Cerrar el ProgressDialog
+                if (esValido) {
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
     }
+
 }
