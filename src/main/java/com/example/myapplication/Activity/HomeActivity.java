@@ -3,7 +3,9 @@ import  com.example.myapplication.Models.Producto;
 import  android.os.Bundle;
 import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
-
+import java.util.ArrayList;
+import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,25 +23,84 @@ public class HomeActivity extends AppCompatActivity {
 
     private LinearLayout productContainer;
     private ProductoDAO productoDAO;
+    private List<Producto> productos; // Lista completa de productos
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home);
+
         productContainer = findViewById(R.id.productContainer);
+        SearchView searchView = findViewById(R.id.searchView);
+        ImageButton searchButton = findViewById(R.id.searchButton);
 
-        SQLServerConnector sqlConecctor = new SQLServerConnector();
-        productoDAO = new ProductoDAOImpl(sqlConecctor);
-        List<Producto> productos = productoDAO.obtenerTodosLosProductos();
+        // Configuración de la base de datos y productos
+        SQLServerConnector sqlConnector = new SQLServerConnector();
+        productoDAO = new ProductoDAOImpl(sqlConnector);
+        productos = productoDAO.obtenerTodosLosProductos();
 
+        // Mostrar todos los productos inicialmente
         if (productos.isEmpty()) {
             Toast.makeText(this, "No hay productos disponibles", Toast.LENGTH_SHORT).show();
         } else {
             agregarProductosDinamicamente(productos); // Crear botones dinámicos
         }
 
+        // Configurar el botón de búsqueda para mostrar el SearchView
+        searchButton.setOnClickListener(v -> {
+            searchView.setVisibility(View.VISIBLE); // Mostrar el SearchView
+            searchButton.setVisibility(View.GONE); // Ocultar el botón de búsqueda
+            searchView.requestFocus(); // Dar foco al SearchView automáticamente
+        });
+
+        // Configurar el SearchView para filtrar productos
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Cuando el usuario confirma la búsqueda
+                filtrarProductos(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Mientras el usuario escribe, se filtran los productos
+                filtrarProductos(newText);
+                return true;
+            }
+        });
+
+        // Configurar el evento de cierre del SearchView
+        searchView.setOnCloseListener(() -> {
+            searchView.setVisibility(View.GONE); // Ocultar el SearchView
+            searchButton.setVisibility(View.VISIBLE); // Mostrar el botón de búsqueda
+            searchView.clearFocus(); // Remover el foco del SearchView
+            actualizarProductos(productos); // Restaurar la lista completa limpiando primero el contenedor
+            return true;
+        });
+
     }
 
+    // Método para filtrar productos
+    private void filtrarProductos(String query) {
+        List<Producto> productosFiltrados = new ArrayList<>();
+        for (Producto producto : productos) {
+            if (producto.getNombreProducto().toLowerCase().contains(query.toLowerCase())) {
+                productosFiltrados.add(producto);
+            }
+        }
+
+        // Actualizar el contenedor con los productos filtrados
+        actualizarProductos(productosFiltrados);
+    }
+
+    // Método para actualizar los productos en el contenedor dinámico
+    private void actualizarProductos(List<Producto> productosFiltrados) {
+        productContainer.removeAllViews(); // Limpiar el contenedor
+        agregarProductosDinamicamente(productosFiltrados); // Agregar productos filtrados
+    }
+
+    // Método para agregar los productos dinámicamente
     private void agregarProductosDinamicamente(List<Producto> productos) {
         LayoutInflater inflater = LayoutInflater.from(this); // Crea el inflater
 
@@ -76,9 +137,5 @@ public class HomeActivity extends AppCompatActivity {
             productContainer.addView(productView);
         }
     }
-
-
-
-
-
 }
+
