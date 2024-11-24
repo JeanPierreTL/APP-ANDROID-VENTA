@@ -40,7 +40,7 @@
             android:layout_height="32dp"
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
-            android:contentDescription="Buscar productos"
+            android:contentDescription="Buscar un producto"
             android:src="@drawable/search_48px" />
     </LinearLayout>
 

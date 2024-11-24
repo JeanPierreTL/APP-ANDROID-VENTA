@@ -1,5 +1,7 @@
 package com.example.myapplication.Activity;
 import  com.example.myapplication.Models.Producto;
+
+import android.content.Intent;
 import  android.os.Bundle;
 import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
@@ -129,8 +131,9 @@ public class HomeActivity extends AppCompatActivity {
 
             // Configurar la acción al hacer clic en todo el recuadro
             productView.setOnClickListener(v -> {
-                Toast.makeText(this, "Producto seleccionado: " + producto.getNombreProducto(), Toast.LENGTH_SHORT).show();
-                // Aquí puedes implementar la lógica para agregar al carrito, abrir detalles, etc.
+                Intent intent = new Intent(this, PersonalisacionActivity.class);
+                intent.putExtra("producto", producto); // Enviar el producto al detalle
+                startActivity(intent);
             });
 
             // Agregar la vista del producto al contenedor principal
