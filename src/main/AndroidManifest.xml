@@ -15,6 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
+
+        <activity
+            android:name=".Activity.FacturaRucActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.myapplication.FACTURA_RUC" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".Activity.PersonalisacionActivity"
             android:exported="false" />
