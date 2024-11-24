@@ -1,6 +1,14 @@
 plugins {
-    id("com.android.application")
-}
+    id("com.android.application") version "8.7.2"
+    }
+
+    allprojects {
+        repositories {
+            google()
+            mavenCentral()
+        }
+    }
+
 
 android {
     namespace = "com.example.myapplication"
@@ -15,6 +23,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    repositories {
+        google()
+        mavenCentral()
+    }
+
 
     buildTypes {
         release {
@@ -41,4 +54,10 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     implementation("net.sourceforge.jtds:jtds:1.3.1")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+
+
 }

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/textFacturaTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Factura del Cliente"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingBottom="16dp" />
+
+        <!-- Botones DNI y RUC -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/buttonDni"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DNI"
+                android:layout_marginEnd="16dp" />
+
+            <Button
+                android:id="@+id/buttonRuc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RUC" />
+        </LinearLayout>
+
+        <!-- EditText dinámico para DNI/RUC -->
+        <EditText
+            android:id="@+id/editTextId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Ingrese DNI o RUC"
+            android:inputType="number"
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
+
+        <!-- Botón Aceptar -->
+        <Button
+            android:id="@+id/buttonAceptar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aceptar"
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
+
+        <!-- Resultado de la Factura -->
+        <TextView
+            android:id="@+id/textFacturaResultado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resultado:"
+            android:layout_marginTop="24dp"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <!-- Detalles -->
+        <LinearLayout
+            android:id="@+id/layoutFacturaDetalles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="16dp">
+
+            <!-- Razón Social / Nombre -->
+            <TextView
+                android:id="@+id/textFacturaNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Razón Social:"
+                android:textSize="16sp"
+                android:paddingBottom="8dp" />
+
+            <!-- Productos -->
+            <TextView
+                android:id="@+id/textFacturaProductos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Productos:"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp" />
+
+            <!-- IGV -->
+            <TextView
+                android:id="@+id/textFacturaIgv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="IGV:"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp" />
+
+            <!-- Total -->
+            <TextView
+                android:id="@+id/textFacturaTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total:"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
