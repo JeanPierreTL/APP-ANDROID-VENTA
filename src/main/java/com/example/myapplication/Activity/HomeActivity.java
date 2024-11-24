@@ -4,7 +4,12 @@ import  android.os.Bundle;
 import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.myapplication.Models.ClienteDAOImpl;
 import com.example.myapplication.Models.SQLServerConnector;
@@ -34,27 +39,44 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+
     private void agregarProductosDinamicamente(List<Producto> productos) {
+        LayoutInflater inflater = LayoutInflater.from(this); // Crea el inflater
+
         for (Producto producto : productos) {
-            // Crear un botón dinámico
-            Button productButton = new Button(this);
+            // Inflar el diseño del molde
+            View productView = inflater.inflate(R.layout.item_producto, productContainer, false);
 
-            // Configurar el texto del botón
-            productButton.setText(producto.getNombreProducto() + " - S/" + producto.getPrecio());
-            productButton.setTag(producto); // Guardar el producto en el botón como tag
+            // Obtener las referencias a los elementos del diseño
+            ImageView productImage = productView.findViewById(R.id.productImage);
+            TextView productName = productView.findViewById(R.id.productName);
+            TextView productPrice = productView.findViewById(R.id.productPrice);
 
+            // Configurar los datos del producto
+            productName.setText(producto.getNombreProducto());
+            productPrice.setText("S/ " + producto.getPrecio());
 
-            // Configurar la acción al hacer clic en el botón
-            productButton.setOnClickListener(v -> {
-                Producto seleccionado = (Producto) v.getTag(); // Obtener el producto asociado
+            // Configurar la imagen del producto
+            if (producto.getImagen() != null && !producto.getImagen().isEmpty()) {
+                int imageResId = getResources().getIdentifier(producto.getImagen(), "drawable", getPackageName());
+                if (imageResId != 0) {
+                    productImage.setImageResource(imageResId); // Imagen desde drawable
+                } else {
+                    productImage.setImageResource(R.drawable.ic_launcher_foreground); // Imagen por defecto
+                }
+            }
 
-                // Aquí puedes implementar la lógica para agregar al carrito
+            // Configurar la acción al hacer clic en todo el recuadro
+            productView.setOnClickListener(v -> {
+                Toast.makeText(this, "Producto seleccionado: " + producto.getNombreProducto(), Toast.LENGTH_SHORT).show();
+                // Aquí puedes implementar la lógica para agregar al carrito, abrir detalles, etc.
             });
 
-            // Agregar el botón al contenedor dinámico
-            productContainer.addView(productButton);
+            // Agregar la vista del producto al contenedor principal
+            productContainer.addView(productView);
         }
     }
+
 
 
 

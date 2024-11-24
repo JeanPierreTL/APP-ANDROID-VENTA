@@ -32,7 +32,8 @@ public class ProductoDAOImpl implements ProductoDAO {
                         rs.getString("descripcion"),
                         rs.getDouble("precio"),
                         rs.getBoolean("disponibilidad"),
-                        rs.getInt("stock")
+                        rs.getInt("stock"),
+                        rs.getString("imagen")
                 );
 
                 productos.add(producto); // Agregar producto a la lista
