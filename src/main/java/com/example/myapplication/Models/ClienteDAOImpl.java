@@ -95,4 +95,77 @@ public class ClienteDAOImpl  implements ClienteDAO    {
     }
 
 
+    @Override
+    public Cliente obtenerClientePorUsuario(String usuario) {
+        Cliente cliente = null;
+        String sql = "SELECT * FROM Cliente WHERE usuario = ?";
+        try (Connection conn = sqlConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, usuario);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                cliente = new Cliente(
+                        rs.getString("nombre"),
+                        rs.getString("usuario"),
+                        rs.getString("contrasena"),
+                        rs.getString("correo"),
+                        rs.getString("telefono"),
+                        rs.getString("u_pedido")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cliente;
+    }
+
+
+    @Override
+    public boolean actualizarCliente(Cliente cliente) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        String query = "UPDATE Cliente SET nombre = ?, correo = ?, telefono = ? WHERE usuario = ?";
+
+        try {
+            // Obtener la conexión a la base de datos
+            connection = sqlConnector.connect();
+
+            // Preparar la sentencia SQL
+            statement = connection.prepareStatement(query);
+            statement.setString(1, cliente.getNombre());
+            statement.setString(2, cliente.getCorreo());
+            statement.setString(3, cliente.getTelefono());
+            statement.setString(4, cliente.getUsuario()); // Usamos el campo 'usuario' como identificador
+
+            // Ejecutar la actualización
+            int rowsAffected = statement.executeUpdate();
+
+            // Retornar true si al menos una fila fue actualizada
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            // Cerrar recursos
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
 }

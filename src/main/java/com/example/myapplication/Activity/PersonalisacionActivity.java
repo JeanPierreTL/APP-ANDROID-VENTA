@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.Models.Producto;
 import com.example.myapplication.R;
 
+import java.text.DecimalFormat;
+
 public class PersonalisacionActivity extends AppCompatActivity {
 
     private Producto productoSeleccionado;
@@ -74,7 +76,14 @@ public class PersonalisacionActivity extends AppCompatActivity {
 
     private void actualizarPrecio(Button addToCartButton) {
         double precioTotal = cantidad * productoSeleccionado.getPrecio();
-        addToCartButton.setText("Agregar S/" + precioTotal);
+
+        // Formatear el precio total a dos decimales
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        String precioFormateado = decimalFormat.format(precioTotal);
+
+        // Actualizar el texto del botón con el precio formateado
+        addToCartButton.setText("Agregar S/ " + precioFormateado);
+
     }
 }
 

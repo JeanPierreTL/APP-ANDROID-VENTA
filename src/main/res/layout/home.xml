@@ -24,20 +24,30 @@
         <!-- Nombre del restaurante -->
         <TextView
             android:id="@+id/storeName"
-            android:layout_width="0dp"
+            android:layout_width="181dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingStart="8dp"
+            android:layout_marginRight="60dp"
             android:text="PAPEROS"
+            android:textColor="@android:color/white"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white" />
+            android:textStyle="bold" />
+
+        <!-- Botón de perfil -->
+        <ImageButton
+            android:id="@+id/perfilButton"
+            android:layout_width="32dp"
+            android:layout_height="35dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/person_48px"
+            android:layout_marginRight="8dp" />
 
         <!-- Botón de búsqueda -->
         <ImageButton
             android:id="@+id/searchButton"
             android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@android:color/transparent"
             android:contentDescription="Buscar un producto"
@@ -50,17 +60,17 @@
         android:layout_height="match_parent"
         android:layout_below="@id/topBar">
 
-        <!-- Lista de productos -->
+        <!-- ScrollView para lista de productos -->
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp">
 
             <LinearLayout
                 android:id="@+id/productContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp" />
+                android:orientation="vertical" />
         </ScrollView>
 
         <!-- Barra de búsqueda -->

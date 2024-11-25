@@ -6,6 +6,8 @@ public interface ClienteDAO {
     boolean existeUsuario(String usuario);
     boolean existeCorreo(String correo);
     boolean iniciarSesion(String usuario, String contrasena);
+    Cliente obtenerClientePorUsuario(String usuario);
+    boolean actualizarCliente(Cliente cliente);
 
 
 }

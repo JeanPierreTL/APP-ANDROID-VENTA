@@ -21,9 +21,9 @@ import com.example.myapplication.R;
 import  android.widget.LinearLayout;
 import com.example.myapplication.Models.ProductoDAO;
 import com.example.myapplication.Models.ProductoDAOImpl;
-public class HomeActivity extends AppCompatActivity {
+    public class HomeActivity extends AppCompatActivity {
 
-    private LinearLayout productContainer;
+        private LinearLayout productContainer;
     private ProductoDAO productoDAO;
     private List<Producto> productos; // Lista completa de productos
 
@@ -35,7 +35,7 @@ public class HomeActivity extends AppCompatActivity {
         productContainer = findViewById(R.id.productContainer);
         SearchView searchView = findViewById(R.id.searchView);
         ImageButton searchButton = findViewById(R.id.searchButton);
-
+       ImageButton  perfilButton = findViewById(R.id.perfilButton);
         // Configuración de la base de datos y productos
         SQLServerConnector sqlConnector = new SQLServerConnector();
         productoDAO = new ProductoDAOImpl(sqlConnector);
@@ -47,12 +47,18 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             agregarProductosDinamicamente(productos); // Crear botones dinámicos
         }
+        perfilButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, PerfilActivity.class);
+            intent.putExtra("usuario_logeado", getIntent().getStringExtra("usuario_logeado")); // Propaga el dato
+            startActivity(intent);
+        });
 
         // Configurar el botón de búsqueda para mostrar el SearchView
         searchButton.setOnClickListener(v -> {
             searchView.setVisibility(View.VISIBLE); // Mostrar el SearchView
             searchButton.setVisibility(View.GONE); // Ocultar el botón de búsqueda
             searchView.requestFocus(); // Dar foco al SearchView automáticamente
+          productContainer.removeAllViews(); // Limpiar el contenedor
         });
 
         // Configurar el SearchView para filtrar productos
@@ -140,5 +146,8 @@ public class HomeActivity extends AppCompatActivity {
             productContainer.addView(productView);
         }
     }
+
+
+
 }
 
