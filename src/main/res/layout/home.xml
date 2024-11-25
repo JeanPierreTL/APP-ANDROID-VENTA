@@ -33,6 +33,13 @@
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/CarritoButton"
+            android:layout_width="32dp"
+            android:layout_height="35dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/shopping_cart_48px"
+            android:layout_marginRight="8dp" />
 
         <!-- Botón de perfil -->
         <ImageButton

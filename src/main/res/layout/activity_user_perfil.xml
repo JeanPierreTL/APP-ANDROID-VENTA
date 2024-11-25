@@ -1,12 +1,17 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F9FAFB">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/background_card"
+        android:layout_margin="16dp"
+        android:elevation="4dp">
 
         <!-- Título -->
         <TextView
@@ -14,21 +19,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mi perfil"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:textColor="#333333"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp" />
 
         <!-- Campo Nombres -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nombre"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="4dp" />
         <EditText
             android:id="@+id/etNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nombre" />
+            android:hint="Nombre"
+            android:background="@drawable/rounded_edittext"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:layout_marginBottom="16dp" />
 
         <!-- Campo Usuario -->
         <TextView
@@ -36,13 +49,18 @@
             android:layout_height="wrap_content"
             android:text="Usuario"
             android:textSize="14sp"
-            android:layout_marginTop="16dp" />
+            android:textColor="#666666"
+            android:layout_marginBottom="4dp" />
         <EditText
             android:id="@+id/etUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Usuario"
-            android:enabled="false" />
+            android:background="@drawable/rounded_edittext"
+            android:padding="12dp"
+            android:enabled="false"
+            android:textColor="#999999"
+            android:layout_marginBottom="16dp" />
 
         <!-- Campo Correo -->
         <TextView
@@ -50,12 +68,17 @@
             android:layout_height="wrap_content"
             android:text="Correo"
             android:textSize="14sp"
-            android:layout_marginTop="16dp" />
+            android:textColor="#666666"
+            android:layout_marginBottom="4dp" />
         <EditText
             android:id="@+id/etCorreo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Correo" />
+            android:hint="Correo"
+            android:background="@drawable/rounded_edittext"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:layout_marginBottom="16dp" />
 
         <!-- Campo Teléfono -->
         <TextView
@@ -63,12 +86,17 @@
             android:layout_height="wrap_content"
             android:text="Teléfono"
             android:textSize="14sp"
-            android:layout_marginTop="16dp" />
+            android:textColor="#666666"
+            android:layout_marginBottom="4dp" />
         <EditText
             android:id="@+id/etTelefono"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Teléfono" />
+            android:hint="Teléfono"
+            android:background="@drawable/rounded_edittext"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:layout_marginBottom="24dp" />
 
         <!-- Botón Guardar -->
         <Button
@@ -76,6 +104,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Guardar"
-            android:layout_marginTop="24dp" />
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#4CAF50"
+            android:padding="12dp"
+            android:textStyle="bold"
+            android:elevation="4dp" />
     </LinearLayout>
 </ScrollView>

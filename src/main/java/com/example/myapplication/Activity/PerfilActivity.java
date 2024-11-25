@@ -116,7 +116,14 @@ public class PerfilActivity extends AppCompatActivity {
                     boolean resultado = clienteDAO.actualizarCliente(clienteLogeado);
 
                     if (resultado) {
-                        mostrarDialogoAviso("¡Exito!");
+                        mostrarDialogoAviso("¡Éxito!");
+
+                        // Retrasar la navegación al LoginActivity
+                        new android.os.Handler().postDelayed(() -> {
+                            Intent intent = new Intent(PerfilActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish(); // Opcional: Finaliza la actividad actual
+                        }, 3000); // Retraso en milisegundos (3000 ms = 3 segundos)
                     } else {
                         Toast.makeText(this, "Error al guardar los cambios", Toast.LENGTH_SHORT).show();
                     }

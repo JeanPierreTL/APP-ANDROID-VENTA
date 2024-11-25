@@ -1,4 +1,5 @@
 package com.example.myapplication.Activity;
+import com.example.myapplication.Models.Carrito;
 import  com.example.myapplication.Models.Producto;
 
 import android.content.Intent;
@@ -36,6 +37,7 @@ import com.example.myapplication.Models.ProductoDAOImpl;
         SearchView searchView = findViewById(R.id.searchView);
         ImageButton searchButton = findViewById(R.id.searchButton);
        ImageButton  perfilButton = findViewById(R.id.perfilButton);
+       ImageButton CarritoButton = findViewById(R.id.CarritoButton);
         // Configuración de la base de datos y productos
         SQLServerConnector sqlConnector = new SQLServerConnector();
         productoDAO = new ProductoDAOImpl(sqlConnector);
@@ -47,6 +49,10 @@ import com.example.myapplication.Models.ProductoDAOImpl;
         } else {
             agregarProductosDinamicamente(productos); // Crear botones dinámicos
         }
+      CarritoButton.setOnClickListener(v -> {
+          Intent intent = new Intent(HomeActivity.this, CarritoActivity.class);
+          startActivity(intent);
+      });
         perfilButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, PerfilActivity.class);
             intent.putExtra("usuario_logeado", getIntent().getStringExtra("usuario_logeado")); // Propaga el dato

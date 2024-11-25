@@ -1,0 +1,79 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F9F9F9">
+
+    <!-- Título del carrito -->
+    <TextView
+        android:id="@+id/cartTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Mi carrito"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="#333333"
+        android:gravity="start"
+        android:background="#FFFFFF"
+        android:elevation="4dp" />
+
+    <!-- Lista de productos en el carrito -->
+    <ListView
+        android:id="@+id/cartListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"
+        android:padding="8dp"
+        android:background="#FFFFFF" />
+
+    <!-- Botón para vaciar el carrito -->
+    <Button
+        android:id="@+id/emptyCartButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Vaciar carrito"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FF3D00"
+        android:fontFamily="sans-serif-medium"
+        android:elevation="2dp" />
+
+    <!-- Subtotal y botón de acción -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:background="#FFFFFF"
+        android:elevation="4dp">
+
+        <!-- Subtotal -->
+        <TextView
+            android:id="@+id/subtotalText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:text="Subtotal: S/21.80"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="#333333" />
+
+        <!-- Botón para ir a pagar -->
+        <Button
+            android:id="@+id/proceedToPayButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Ir a pagar"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#4CAF50"
+            android:fontFamily="sans-serif-medium"
+            android:padding="12dp"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+</LinearLayout>
