@@ -12,7 +12,7 @@ import com.example.myapplication.R;
 
 public class MindentificateActivity extends AppCompatActivity {
     ImageButton btn_register;
-
+    ImageButton btn_invitado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +20,7 @@ public class MindentificateActivity extends AppCompatActivity {
         setContentView(R.layout.identificate);
 
       btn_register = findViewById(R.id.btn_register);
+      btn_invitado = findViewById(R.id.btn_invitado);
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,6 +29,13 @@ public class MindentificateActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        btn_invitado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent intent = new Intent(MindentificateActivity.this, Home_inviActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

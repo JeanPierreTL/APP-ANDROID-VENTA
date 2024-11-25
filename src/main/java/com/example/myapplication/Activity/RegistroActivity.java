@@ -8,10 +8,17 @@ import com.example.myapplication.Models.ClienteDAO;
 import com.example.myapplication.Models.ClienteDAOImpl;
 import com.example.myapplication.R;
 import com.example.myapplication.Models.SQLServerConnector;
+
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegistroActivity extends AppCompatActivity {
@@ -50,7 +57,12 @@ public class RegistroActivity extends AppCompatActivity {
                 Cliente cliente = new Cliente(nombre, usuario, contrasena, correo, telefono, uPedido);
                 boolean resultado = clienteDAO.insertarCliente(cliente);
                 if (resultado) {
-                    Toast.makeText(this, "Cliente registrado exitosamente", Toast.LENGTH_SHORT).show();
+                    mostrarDialogoAviso("¡Exito!");
+                    new android.os.Handler().postDelayed(() -> {
+                        Intent intent = new Intent(RegistroActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish(); // Opcional: Finaliza la actividad actual
+                    }, 2500);
                 } else {
                     Toast.makeText(this, "Error al registrar cliente", Toast.LENGTH_SHORT).show();
                 }
@@ -137,6 +149,23 @@ public class RegistroActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+    private void mostrarDialogoAviso(String mensaje) {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.alerta_confirmacion);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setCancelable(true); // Permitir cerrar el diálogo al tocar fuera
+
+        // Configurar el mensaje
+        TextView dialogMessage = dialog.findViewById(R.id.dialogMessage);
+        dialogMessage.setText(mensaje);
+
+        // Mostrar el diálogo
+        dialog.show();
+
+        // Cerrar automáticamente después de 2 segundos
+        new Handler().postDelayed(dialog::dismiss, 2000);
     }
 
 

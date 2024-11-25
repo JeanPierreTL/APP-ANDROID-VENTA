@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application") version "8.6.0"
+    id("com.android.application") version "8.2.2"
     }
 
     allprojects {

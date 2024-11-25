@@ -1,0 +1,82 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Barra superior -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:background="@android:color/holo_red_dark"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+
+        <!-- Logo de la tienda -->
+        <ImageView
+            android:id="@+id/storeLogo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/loga"
+            android:contentDescription="Logo de la tienda" />
+
+        <!-- Nombre del restaurante -->
+        <TextView
+            android:id="@+id/storeName"
+            android:layout_width="181dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:layout_marginRight="60dp"
+            android:text="PAPEROS"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Botón de perfil -->
+
+        <!-- Botón de búsqueda -->
+        <ImageButton
+            android:id="@+id/searchButton"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@android:color/transparent"
+            android:contentDescription="Buscar un producto"
+            android:src="@drawable/search_48px" />
+    </LinearLayout>
+
+    <!-- Contenedor principal para productos y barra de búsqueda -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topBar">
+
+        <!-- ScrollView para lista de productos -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp">
+
+            <LinearLayout
+                android:id="@+id/productContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+        <!-- Barra de búsqueda -->
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:visibility="gone"
+            android:queryHint="Buscar productos..."
+            android:background="@android:color/white"
+            android:padding="8dp" />
+    </FrameLayout>
+
+</RelativeLayout>
