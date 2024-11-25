@@ -11,4 +11,4 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "MyApplication" // Cambia "MyApplication" por el nombre de tu proyecto
+rootProject.name = "PAPEROSOF" // Cambia "MyApplication" por el nombre de tu proyecto
