@@ -30,18 +30,22 @@
         android:background="#FFFFFF" />
 
     <!-- Botón para vaciar el carrito -->
+
+    <!-- Subtotal y botón de acción -->
+
     <Button
         android:id="@+id/emptyCartButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="Vaciar carrito"
-        android:textColor="#FFFFFF"
         android:backgroundTint="#FF3D00"
+        android:elevation="2dp"
         android:fontFamily="sans-serif-medium"
-        android:elevation="2dp" />
+        android:insetLeft="20dp"
+        android:insetRight="20dp"
+        android:padding="14dp"
+        android:text="Vaciar carrito"
+        android:textColor="#FFFFFF" />
 
-    <!-- Subtotal y botón de acción -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
