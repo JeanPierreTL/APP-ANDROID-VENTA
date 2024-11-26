@@ -49,11 +49,14 @@ import com.example.myapplication.Models.ProductoDAOImpl;
         } else {
             agregarProductosDinamicamente(productos); // Crear botones dinámicos
         }
-      CarritoButton.setOnClickListener(v -> {
-          Intent intent = new Intent(HomeActivity.this, CarritoActivity.class);
-          intent.putExtra("usuario_logeado", getIntent().getStringExtra("usuario_logeado")); // Pasar el dato
-          startActivity(intent);
-      });
+
+        CarritoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, CarritoActivity.class);
+            intent.putExtra("usuario_logeado", getIntent().getStringExtra("usuario_logeado")); // Propaga el dato
+            startActivity(intent);
+        });
+
+
         perfilButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, PerfilActivity.class);
             intent.putExtra("usuario_logeado", getIntent().getStringExtra("usuario_logeado")); // Propaga el dato

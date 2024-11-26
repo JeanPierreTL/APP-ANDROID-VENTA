@@ -16,7 +16,7 @@ import com.example.myapplication.R;
 
 import java.text.DecimalFormat;
     
-    public class PersonalisacionActivity extends AppCompatActivity {
+    public class    PersonalisacionActivity extends AppCompatActivity {
 
         private Producto productoSeleccionado;
         private int cantidad = 1; // Cantidad inicial
@@ -77,9 +77,11 @@ import java.text.DecimalFormat;
             addToCartButton.setOnClickListener(v -> {
                 CarritoSingleton.getInstance().agregarProducto(productoSeleccionado, cantidad);
                 Toast.makeText(this, "Producto agregado al carrito", Toast.LENGTH_SHORT).show();
-                finish();
-
+                Intent intenta = new Intent(PersonalisacionActivity.this, HomeActivity.class);
+                intenta.putExtra("usuario_logeado", getIntent().getStringExtra("usuario_logeado")); // Propaga el dato
+                startActivity(intenta);
             });
+
         }
 
         private void actualizarPrecio(Button addToCartButton) {

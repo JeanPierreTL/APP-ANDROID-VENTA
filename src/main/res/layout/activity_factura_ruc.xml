@@ -8,14 +8,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <TextView
+            android:id="@+id/textFacturaTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Haz tu pedido"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:gravity="center"
+            android:paddingBottom="16dp" />
 
         <!-- Título -->
         <TextView
             android:id="@+id/textFacturaTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Factura del Cliente"
-            android:textSize="20sp"
+            android:text="Factura y Pago"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:gravity="center"
             android:paddingBottom="16dp" />
@@ -117,5 +127,47 @@
                 android:layout_marginTop="8dp" />
 
         </LinearLayout>
+
+        <!-- Sección de Métodos de Pago -->
+        <TextView
+            android:id="@+id/textMetodoPagoTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Método de Pago"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/buttonEfectivo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Efectivo"
+                android:layout_marginEnd="16dp" />
+
+            <Button
+                android:id="@+id/buttonTarjeta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tarjeta" />
+        </LinearLayout>
+
+        <!-- Botón Finalizar Pago -->
+        <Button
+            android:id="@+id/buttonFinalizarPago"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Finalizar Pago"
+            android:backgroundTint="#4CAF50"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp" />
     </LinearLayout>
 </ScrollView>

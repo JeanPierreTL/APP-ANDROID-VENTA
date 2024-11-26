@@ -39,7 +39,7 @@ public class Home_inviActivity extends AppCompatActivity {
         productContainer = findViewById(R.id.productContainer);
         SearchView searchView = findViewById(R.id.searchView);
         ImageButton searchButton = findViewById(R.id.searchButton);
-
+        ImageButton CarritoButton = findViewById(R.id.CarritoButton);
         // Configuración de la base de datos y productos
         SQLServerConnector sqlConnector = new SQLServerConnector();
         productoDAO = new ProductoDAOImpl(sqlConnector);
@@ -52,7 +52,11 @@ public class Home_inviActivity extends AppCompatActivity {
             agregarProductosDinamicamente(productos); // Crear botones dinámicos
         }
 
-
+        CarritoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Home_inviActivity.this, CarritoActivity.class);
+            intent.putExtra("usuario_logeado", getIntent().getStringExtra("usuario_logeado")); // Propaga el dato
+            startActivity(intent);
+        });
         // Configurar el botón de búsqueda para mostrar el SearchView
         searchButton.setOnClickListener(v -> {
             searchView.setVisibility(View.VISIBLE); // Mostrar el SearchView

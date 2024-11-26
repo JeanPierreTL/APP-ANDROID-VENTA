@@ -1,5 +1,7 @@
 package com.example.myapplication.Activity;
-
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.widget.Toast;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,12 +10,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import com.example.myapplication.Models.ApiService;
+import com.example.myapplication.Models.DetallePedido;
+import com.example.myapplication.Models.Pedido;
+import com.example.myapplication.Models.PedidoDAO;
 import com.example.myapplication.Models.ItemCarrito;
+import com.example.myapplication.Models.Pago;
+import com.example.myapplication.Models.PedidoDAOImpl;
 import com.example.myapplication.Models.RucResponse;
 import com.example.myapplication.Models.DniResponse;
 import com.example.myapplication.Models.CarritoSingleton;
+import com.example.myapplication.Models.SQLServerConnector;
 import com.example.myapplication.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,10 +38,12 @@ public class FacturaRucActivity extends AppCompatActivity {
     private EditText editTextId;
     private TextView textFacturaNombre, textFacturaProductos, textFacturaIgv, textFacturaTotal;
     private LinearLayout layoutFacturaDetalles;
-    private Button buttonDni, buttonRuc, buttonAceptar;
+    private Button buttonDni, buttonRuc, buttonAceptar, finalizarPagoButton, buttonEfectivo, buttonTarjeta;
 
     private ApiService apiService;
-
+    private String metodoPagoSeleccionado = "TARJETA"; // Método de pago por defecto
+    private String nombreCliente = ""; // Variable para almacenar el nombre del cliente
+    boolean exito = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +57,7 @@ public class FacturaRucActivity extends AppCompatActivity {
         apiService = retrofit.create(ApiService.class);
 
         // Inicializar vistas
+        finalizarPagoButton = findViewById(R.id.buttonFinalizarPago);
         editTextId = findViewById(R.id.editTextId);
         textFacturaNombre = findViewById(R.id.textFacturaNombre);
         textFacturaProductos = findViewById(R.id.textFacturaProductos);
@@ -54,8 +67,13 @@ public class FacturaRucActivity extends AppCompatActivity {
         buttonDni = findViewById(R.id.buttonDni);
         buttonRuc = findViewById(R.id.buttonRuc);
         buttonAceptar = findViewById(R.id.buttonAceptar);
+        buttonEfectivo = findViewById(R.id.buttonEfectivo);
+        buttonTarjeta = findViewById(R.id.buttonTarjeta);
 
-        // Botones DNI y RUC
+        SQLServerConnector sqlConnector = new SQLServerConnector();
+        PedidoDAO pedidoDAO = new PedidoDAOImpl(sqlConnector);
+
+        // Configuración de botones
         buttonDni.setOnClickListener(v -> {
             editTextId.setHint("Ingrese DNI");
             editTextId.setVisibility(View.VISIBLE);
@@ -68,7 +86,6 @@ public class FacturaRucActivity extends AppCompatActivity {
             buttonAceptar.setVisibility(View.VISIBLE);
         });
 
-        // Botón Aceptar
         buttonAceptar.setOnClickListener(v -> {
             String id = editTextId.getText().toString();
             if (id.isEmpty()) {
@@ -84,6 +101,18 @@ public class FacturaRucActivity extends AppCompatActivity {
                 showError("Por favor, ingrese un número válido.");
             }
         });
+
+        buttonEfectivo.setOnClickListener(v -> {
+            metodoPagoSeleccionado = "EFECTIVO";
+            Toast.makeText(this, "Método de pago seleccionado: Efectivo", Toast.LENGTH_SHORT).show();
+        });
+
+        buttonTarjeta.setOnClickListener(v -> {
+            metodoPagoSeleccionado = "TARJETA";
+            Toast.makeText(this, "Método de pago seleccionado: Tarjeta", Toast.LENGTH_SHORT).show();
+        });
+
+        finalizarPagoButton.setOnClickListener(v -> finalizarPago(pedidoDAO));
     }
 
     private void consultaDni(String dni) {
@@ -93,10 +122,10 @@ public class FacturaRucActivity extends AppCompatActivity {
             public void onResponse(Call<DniResponse> call, Response<DniResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     DniResponse dniResponse = response.body();
-                    // Actualizar el layout de detalles con el nombre del cliente
-                    actualizarFactura(dniResponse.getNombres() + " " +
+                    nombreCliente = dniResponse.getNombres() + " " +
                             dniResponse.getApellidoPaterno() + " " +
-                            dniResponse.getApellidoMaterno());
+                            dniResponse.getApellidoMaterno();
+                    actualizarFactura(nombreCliente);
                 } else {
                     showError("Error al obtener los datos del DNI.");
                 }
@@ -116,8 +145,8 @@ public class FacturaRucActivity extends AppCompatActivity {
             public void onResponse(Call<RucResponse> call, Response<RucResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     RucResponse rucResponse = response.body();
-                    // Actualizar el layout de detalles con la razón social del cliente
-                    actualizarFactura(rucResponse.getRazonSocial());
+                    nombreCliente = rucResponse.getRazonSocial();
+                    actualizarFactura(nombreCliente);
                 } else {
                     showError("Error al obtener los datos del RUC.");
                 }
@@ -131,33 +160,95 @@ public class FacturaRucActivity extends AppCompatActivity {
     }
 
     private void actualizarFactura(String nombre) {
-        // Mostrar el nombre del cliente (ya sea del DNI o RUC)
         textFacturaNombre.setText("Razón Social / Cliente: " + nombre);
 
-        // Obtener los productos del carrito
-        double subtotal = 0.0;
-        StringBuilder productos = new StringBuilder("Productos:\n");
+        double subtotal = calcularSubtotal();
+        double igv = subtotal * 0.18;
+        double total = subtotal + igv;
 
-        // Recorrer los productos del carrito
+        StringBuilder productos = new StringBuilder("Productos:\n");
         for (ItemCarrito item : CarritoSingleton.getInstance().getItems()) {
             double totalProducto = item.getProducto().getPrecio() * item.getCantidad();
             productos.append(item.getProducto().getNombreProducto())
                     .append(" - ").append(item.getCantidad())
                     .append(" unidades - S/ ").append(totalProducto).append("\n");
-            subtotal += totalProducto;
         }
 
-        // Calcular el IGV (18%) y el total
-        double igv = subtotal * 0.18;
-        double total = subtotal + igv;
-
-        // Actualizar los campos de la factura
         textFacturaProductos.setText(productos.toString());
         textFacturaIgv.setText("IGV: S/ " + String.format("%.2f", igv));
         textFacturaTotal.setText("Total: S/ " + String.format("%.2f", total));
-
-        // Hacer visible el layout de la factura
         layoutFacturaDetalles.setVisibility(View.VISIBLE);
+    }
+
+    private void finalizarPago(PedidoDAO pedidoDAO) {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Procesando pedido...");
+        progressDialog.setCancelable(false); // Evita que se cierre accidentalmente
+        progressDialog.show();
+
+        // Ejecutar en un hilo separado
+        new Thread(() -> {
+            double subtotal = calcularSubtotal();
+            double total = subtotal + subtotal * 0.18;
+            String dniRuc = editTextId.getText().toString();
+            Pedido pedido = new Pedido();
+            pedido.setIdCliente(obtenerIdCliente());
+            pedido.setEstadoPedido("PAGADO");
+            pedido.setSubtotal(subtotal);
+            pedido.setTotal(total);
+            pedido.setModalidad("PRESENCIAL");
+            pedido.setNombreCliente(nombreCliente); // Usar el nombre obtenido
+            pedido.setDniRuc(dniRuc);
+
+
+
+            int idPedido = pedidoDAO.insertarPedido(pedido);
+            if (idPedido > 0) {
+                for (ItemCarrito item : CarritoSingleton.getInstance().getItems()) {
+                    DetallePedido detalle = new DetallePedido();
+                    detalle.setIdPedido(idPedido);
+                    detalle.setIdProducto(item.getProducto().getIdProducto());
+                    detalle.setCantidad(item.getCantidad());
+                    detalle.setPrecioUnitario(item.getProducto().getPrecio());
+                    detalle.setSubtotal(item.getProducto().getPrecio() * item.getCantidad());
+                    pedidoDAO.insertarDetallePedido(detalle);
+                }
+
+                Pago pago = new Pago();
+                pago.setIdPedido(idPedido);
+                pago.setMonto(total);
+                pago.setMetodoPago(metodoPagoSeleccionado);
+                pago.setEstadoPago("COMPLETADO");
+                pedidoDAO.insertarPago(pago);
+
+                exito = true;
+            }
+
+            // Volver al hilo principal para actualizar la interfaz de usuario
+            runOnUiThread(() -> {
+                progressDialog.dismiss();
+                if (exito) {
+                    Toast.makeText(FacturaRucActivity.this, "Pago realizado exitosamente", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(FacturaRucActivity.this, BienvenidoActivity.class); // Cambiar de actividad
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(FacturaRucActivity.this, "Error al procesar el pedido", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
+    }
+
+
+    private double calcularSubtotal() {
+        double subtotal = 0.0;
+        for (ItemCarrito item : CarritoSingleton.getInstance().getItems()) {
+            subtotal += item.getProducto().getPrecio() * item.getCantidad();
+        }
+        return subtotal;
+    }
+
+    private int obtenerIdCliente() {
+        return 1; // Simulación de ID de cliente
     }
 
     private void showError(String mensaje) {

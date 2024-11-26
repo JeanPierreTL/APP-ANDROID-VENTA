@@ -28,6 +28,8 @@ public class CarritoActivity extends AppCompatActivity implements CarritoAdapter
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.carrito);
+        String usuarioLogeado = getIntent().getStringExtra("usuario_logeado");
+
         carritoListView = findViewById(R.id.cartListView);
         totalPrice = findViewById(R.id.subtotalText);
         checkoutButton = findViewById(R.id.proceedToPayButton);
@@ -59,6 +61,7 @@ public class CarritoActivity extends AppCompatActivity implements CarritoAdapter
             }
 
             Intent intent = new Intent(CarritoActivity.this, FacturaRucActivity.class);
+            intent.putExtra("usuario_logeado", getIntent().getStringExtra("usuario_logeado")); // Propaga el dato
             startActivity(intent);
         });
     }
