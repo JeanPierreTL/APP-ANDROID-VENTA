@@ -1,6 +1,5 @@
 package com.example.myapplication.Activity;
-import com.example.myapplication.Models.ApiService;
-import com.example.myapplication.Models.RucResponse;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,8 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.Models.ApiClient;
+import com.example.myapplication.Models.ApiService;
+import com.example.myapplication.Models.ItemCarrito;
+import com.example.myapplication.Models.RucResponse;
 import com.example.myapplication.Models.DniResponse;
+import com.example.myapplication.Models.CarritoSingleton;
 import com.example.myapplication.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,7 +93,7 @@ public class FacturaRucActivity extends AppCompatActivity {
             public void onResponse(Call<DniResponse> call, Response<DniResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     DniResponse dniResponse = response.body();
-                    // Actualizar el layout de detalles
+                    // Actualizar el layout de detalles con el nombre del cliente
                     actualizarFactura(dniResponse.getNombres() + " " +
                             dniResponse.getApellidoPaterno() + " " +
                             dniResponse.getApellidoMaterno());
@@ -114,7 +116,7 @@ public class FacturaRucActivity extends AppCompatActivity {
             public void onResponse(Call<RucResponse> call, Response<RucResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     RucResponse rucResponse = response.body();
-                    // Actualizar el layout de detalles
+                    // Actualizar el layout de detalles con la razón social del cliente
                     actualizarFactura(rucResponse.getRazonSocial());
                 } else {
                     showError("Error al obtener los datos del RUC.");
@@ -129,11 +131,32 @@ public class FacturaRucActivity extends AppCompatActivity {
     }
 
     private void actualizarFactura(String nombre) {
-        // Mostrar detalles de factura
+        // Mostrar el nombre del cliente (ya sea del DNI o RUC)
         textFacturaNombre.setText("Razón Social / Cliente: " + nombre);
-        textFacturaProductos.setText("Productos: Producto A - 2 unidades - $20.00\nProducto B - 1 unidad - $15.00");
-        textFacturaIgv.setText("IGV: $5.25");
-        textFacturaTotal.setText("Total: $40.25");
+
+        // Obtener los productos del carrito
+        double subtotal = 0.0;
+        StringBuilder productos = new StringBuilder("Productos:\n");
+
+        // Recorrer los productos del carrito
+        for (ItemCarrito item : CarritoSingleton.getInstance().getItems()) {
+            double totalProducto = item.getProducto().getPrecio() * item.getCantidad();
+            productos.append(item.getProducto().getNombreProducto())
+                    .append(" - ").append(item.getCantidad())
+                    .append(" unidades - S/ ").append(totalProducto).append("\n");
+            subtotal += totalProducto;
+        }
+
+        // Calcular el IGV (18%) y el total
+        double igv = subtotal * 0.18;
+        double total = subtotal + igv;
+
+        // Actualizar los campos de la factura
+        textFacturaProductos.setText(productos.toString());
+        textFacturaIgv.setText("IGV: S/ " + String.format("%.2f", igv));
+        textFacturaTotal.setText("Total: S/ " + String.format("%.2f", total));
+
+        // Hacer visible el layout de la factura
         layoutFacturaDetalles.setVisibility(View.VISIBLE);
     }
 
@@ -142,4 +165,3 @@ public class FacturaRucActivity extends AppCompatActivity {
         layoutFacturaDetalles.setVisibility(View.GONE);
     }
 }
-

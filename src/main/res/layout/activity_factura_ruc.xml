@@ -71,7 +71,7 @@
             android:textSize="16sp"
             android:visibility="gone" />
 
-        <!-- Detalles -->
+        <!-- Detalles de la Factura -->
         <LinearLayout
             android:id="@+id/layoutFacturaDetalles"
             android:layout_width="match_parent"

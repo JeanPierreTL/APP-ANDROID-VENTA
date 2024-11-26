@@ -1,5 +1,6 @@
 package com.example.myapplication.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ListView;
@@ -57,10 +58,8 @@ public class CarritoActivity extends AppCompatActivity implements CarritoAdapter
                 return;
             }
 
-            Toast.makeText(this, "Compra finalizada", Toast.LENGTH_SHORT).show();
-            itemsCarrito.clear(); // Vaciar el carrito
-            adapter.notifyDataSetChanged(); // Actualizar la vista
-            actualizarTotal(); // Actualizar el total
+            Intent intent = new Intent(CarritoActivity.this, FacturaRucActivity.class);
+            startActivity(intent);
         });
     }
 
