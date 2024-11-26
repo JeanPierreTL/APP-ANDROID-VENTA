@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
         private int cantidad = 1; // Cantidad inicial
 
 
+
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -52,6 +53,9 @@ import java.text.DecimalFormat;
                     int imageResId = getResources().getIdentifier(productoSeleccionado.getImagen(), "drawable", getPackageName());
                     productImage.setImageResource(imageResId);
                 }
+
+                // Llamar a actualizarPrecio para inicializar el texto del botón con el precio inicial
+                actualizarPrecio(addToCartButton);
             }
 
             // Configurar el incremento y decremento de cantidad
@@ -73,6 +77,7 @@ import java.text.DecimalFormat;
             addToCartButton.setOnClickListener(v -> {
                 CarritoSingleton.getInstance().agregarProducto(productoSeleccionado, cantidad);
                 Toast.makeText(this, "Producto agregado al carrito", Toast.LENGTH_SHORT).show();
+                finish();
 
             });
         }
@@ -86,8 +91,8 @@ import java.text.DecimalFormat;
 
             // Actualizar el texto del botón con el precio formateado
             addToCartButton.setText("Agregar S/ " + precioFormateado);
-
         }
+
     }
 
 

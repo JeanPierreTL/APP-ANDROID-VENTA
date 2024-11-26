@@ -51,6 +51,7 @@ import com.example.myapplication.Models.ProductoDAOImpl;
         }
       CarritoButton.setOnClickListener(v -> {
           Intent intent = new Intent(HomeActivity.this, CarritoActivity.class);
+          intent.putExtra("usuario_logeado", getIntent().getStringExtra("usuario_logeado")); // Pasar el dato
           startActivity(intent);
       });
         perfilButton.setOnClickListener(v -> {

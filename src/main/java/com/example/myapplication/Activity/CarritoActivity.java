@@ -16,8 +16,7 @@ import com.example.myapplication.R;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class CarritoActivity extends AppCompatActivity {
-
+public class CarritoActivity extends AppCompatActivity implements CarritoAdapter.OnCarritoChangeListener {
     private ListView carritoListView;
     private TextView totalPrice;
     private Button checkoutButton;
@@ -26,9 +25,8 @@ public class CarritoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.carrito);
 
-        // Referencias a los elementos del layout
+        setContentView(R.layout.carrito);
         carritoListView = findViewById(R.id.cartListView);
         totalPrice = findViewById(R.id.subtotalText);
         checkoutButton = findViewById(R.id.proceedToPayButton);
@@ -38,7 +36,7 @@ public class CarritoActivity extends AppCompatActivity {
         List<ItemCarrito> itemsCarrito = CarritoSingleton.getInstance().getItems();
 
         // Configurar el adaptador personalizado
-        CarritoAdapter adapter = new CarritoAdapter(this, itemsCarrito);
+        CarritoAdapter adapter = new CarritoAdapter(this, itemsCarrito, this);
         carritoListView.setAdapter(adapter);
 
         // Mostrar el total inicial
@@ -71,5 +69,10 @@ public class CarritoActivity extends AppCompatActivity {
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         double total = CarritoSingleton.getInstance().calcularTotal();
         totalPrice.setText("Total: S/ " + decimalFormat.format(total));
+    }
+
+    @Override
+    public void onCarritoChange() {
+        actualizarTotal(); // Actualizar el total cuando cambie el carrito
     }
 }

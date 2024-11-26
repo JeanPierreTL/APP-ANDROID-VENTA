@@ -2,9 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="8dp"
-    android:background="@drawable/background_with_separator"
-    >
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/productImage"
@@ -13,7 +11,7 @@
         android:scaleType="centerCrop" />
 
     <LinearLayout
-        android:layout_width="267dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
@@ -23,37 +21,43 @@
             android:id="@+id/productName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
             android:text="Producto"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-medium" />
 
         <TextView
             android:id="@+id/productPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="S/0.00"
+            android:text="S/ 0.00"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/productTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total: S/ 0.00"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif" />
     </LinearLayout>
 
     <ImageButton
         android:id="@+id/increaseQuantity"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="10dp"
-        android:background="?selectableItemBackgroundBorderless"
-        android:src="@drawable/add_48px" />
+        android:src="@drawable/add_48px"
+        android:background="?selectableItemBackgroundBorderless" />
+
     <TextView
         android:id="@+id/productQuantity"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:gravity="center"
         android:text="1"
         android:textSize="16sp" />
+
     <ImageButton
         android:id="@+id/decreaseQuantity"
-        android:layout_marginTop="10dp"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@drawable/remove_48px"
